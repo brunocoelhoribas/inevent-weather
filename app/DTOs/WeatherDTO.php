@@ -13,7 +13,8 @@ class WeatherDTO {
         public string $icon,
         public int    $humidity,
         public float  $windSpeed,
-        public int    $pressure
+        public int    $pressure,
+        public int $visibility
     ) {
     }
 
@@ -28,7 +29,8 @@ class WeatherDTO {
             icon: "https://openweathermap.org/img/wn/{$data['weather'][0]['icon']}@4x.png",
             humidity: $data['main']['humidity'],
             windSpeed: $data['wind']['speed'],
-            pressure: $data['main']['pressure']
+            pressure: $data['main']['pressure'],
+            visibility: $data['visibility']
         );
     }
 }

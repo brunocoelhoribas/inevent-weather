@@ -53,48 +53,61 @@ const search = () => {
                     <span>{{ error }}</span>
                 </div>
 
-                <div v-if="weather" class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                <div v-if="weather" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-blue-500/20 border border-gray-100 dark:border-gray-700">
 
-                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-8 text-white text-center relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-32 h-32 bg-white opacity-10 rounded-full -translate-x-10 -translate-y-10"></div>
-                        <div class="absolute bottom-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full translate-x-10 translate-y-10"></div>
+                    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+                        <div class="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 bg-blue-400 opacity-20 rounded-full blur-2xl"></div>
 
-                        <h3 class="text-4xl font-bold tracking-wide">{{ weather.city }}</h3>
-                        <div class="flex flex-col items-center justify-center mt-4">
-                            <img :src="weather.icon" :alt="weather.description" class="w-32 h-32 drop-shadow-lg filter">
-                            <div class="text-6xl font-bold mt-[-10px]">{{ Math.round(weather.temperature) }}°</div>
-                            <p class="text-xl capitalize opacity-90 font-medium mt-2">{{ weather.description }}</p>
+                        <h3 class="text-4xl font-bold tracking-wide drop-shadow-md">{{ weather.city }}</h3>
+
+                        <div class="flex flex-col items-center justify-center mt-6">
+                            <div class="bg-white/20 backdrop-blur-md p-4 rounded-full shadow-inner mb-2">
+                                <img :src="weather.icon" :alt="weather.description" class="w-24 h-24 drop-shadow-sm filter">
+                            </div>
+
+                            <div class="text-7xl font-bold mt-2 tracking-tighter">{{ Math.round(weather.temperature) }}°</div>
+                            <p class="text-xl capitalize opacity-90 font-medium mt-1">{{ weather.description }}</p>
                         </div>
                     </div>
 
-                    <div class="p-8">
+                    <div class="p-8 bg-white dark:bg-gray-800">
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
 
-                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-2xl">
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase">Feels Like</span>
-                                <span class="text-xl font-bold text-gray-800 dark:text-white mt-1">{{ Math.round(weather.feelsLike) }}°</span>
+                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Feels Like</span>
+                                <span class="text-lg font-bold text-gray-800 dark:text-white mt-1">
+                    {{ weather.feelsLike !== null ? Math.round(weather.feelsLike) : '--' }}°
+                </span>
                             </div>
 
-                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-2xl">
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase">Min / Max</span>
-                                <span class="text-xl font-bold text-gray-800 dark:text-white mt-1">
-                                    {{ Math.round(weather.tempMin) }}° / {{ Math.round(weather.tempMax) }}°
+                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Min / Max</span>
+                                <span class="text-lg font-bold text-gray-800 dark:text-white mt-1">
+                    {{ weather.tempMin !== null ? Math.round(weather.tempMin) : '--' }}° / {{ weather.tempMax !== null ? Math.round(weather.tempMax) : '--' }}°
+                </span>
+                            </div>
+
+                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Humidity</span>
+                                <span class="text-lg font-bold text-blue-500 mt-1">{{ weather.humidity }}%</span>
+                            </div>
+
+                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Wind</span>
+                                <span class="text-lg font-bold text-gray-800 dark:text-white mt-1">{{ weather.windSpeed }} km/h</span>
+                            </div>
+
+                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Pressure</span>
+                                <span class="text-lg font-bold text-gray-800 dark:text-white mt-1">{{ weather.pressure }} hPa</span>
+                            </div>
+
+                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Visibility</span>
+                                <span class="text-lg font-bold text-gray-800 dark:text-white mt-1">
+                                    {{ weather.visibility ? (weather.visibility / 1000).toFixed(1) : '--' }} km
                                 </span>
-                            </div>
-
-                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-2xl">
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase">Humidity</span>
-                                <span class="text-xl font-bold text-blue-500 mt-1">{{ weather.humidity }}%</span>
-                            </div>
-
-                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-2xl">
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase">Wind</span>
-                                <span class="text-xl font-bold text-gray-800 dark:text-white mt-1">{{ weather.windSpeed }} km/h</span>
-                            </div>
-
-                            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-2xl">
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase">Pressure</span>
-                                <span class="text-xl font-bold text-gray-800 dark:text-white mt-1">{{ weather.pressure }} hPa</span>
                             </div>
 
                         </div>
