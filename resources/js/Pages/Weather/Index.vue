@@ -1,9 +1,11 @@
 <script setup>
 import { useForm, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import WeatherChart from '@/Components/WeatherChart.vue';
 
 const props = defineProps({
     weather: Object,
+    forecast: Object,
     error: String,
     filters: Object
 });
@@ -14,6 +16,11 @@ const form = useForm({
 
 const search = () => {
     form.get(route('weather.index'));
+};
+
+const getDayName = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(date);
 };
 </script>
 
@@ -77,15 +84,15 @@ const search = () => {
                             <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
                                 <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Feels Like</span>
                                 <span class="text-lg font-bold text-gray-800 dark:text-white mt-1">
-                    {{ weather.feelsLike !== null ? Math.round(weather.feelsLike) : '--' }}°
-                </span>
+                                    {{ weather.feelsLike !== null ? Math.round(weather.feelsLike) : '--' }}°
+                                </span>
                             </div>
 
                             <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
                                 <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Min / Max</span>
                                 <span class="text-lg font-bold text-gray-800 dark:text-white mt-1">
-                    {{ weather.tempMin !== null ? Math.round(weather.tempMin) : '--' }}° / {{ weather.tempMax !== null ? Math.round(weather.tempMax) : '--' }}°
-                </span>
+                                    {{ weather.tempMin !== null ? Math.round(weather.tempMin) : '--' }}° / {{ weather.tempMax !== null ? Math.round(weather.tempMax) : '--' }}°
+                                </span>
                             </div>
 
                             <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-100 dark:border-gray-700">
@@ -110,6 +117,29 @@ const search = () => {
                                 </span>
                             </div>
 
+                        </div>
+
+                        <div v-if="forecast" class="mt-10">
+                            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4 ml-2">Next 5 Days</h3>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                <div
+                                    v-for="(day, index) in forecast"
+                                    :key="index"
+                                    class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center transition hover:scale-105"
+                                >
+                                    <p class="text-gray-500 dark:text-gray-400 font-medium text-sm">
+                                        {{ new Date(day.date).toLocaleDateString('en-US', { weekday: 'long' }) }}
+                                    </p>
+                                    <img :src="day.icon" :alt="day.description" class="w-12 h-12 my-2">
+                                    <p class="text-xl font-bold text-gray-800 dark:text-white">{{ Math.round(day.temperature) }}°</p>
+                                    <p class="text-xs text-gray-400 capitalize">{{ day.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="forecast" class="mt-8 bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700">
+                            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 ml-2">Temperature Trend</h3>
+                            <WeatherChart :forecast="forecast" />
                         </div>
                     </div>
                 </div>

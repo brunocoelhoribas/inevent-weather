@@ -14,7 +14,8 @@ class WeatherDTO {
         public int    $humidity,
         public float  $windSpeed,
         public int    $pressure,
-        public int $visibility
+        public int $visibility,
+        public ?string $date = null
     ) {
     }
 
@@ -30,7 +31,8 @@ class WeatherDTO {
             humidity: $data['main']['humidity'],
             windSpeed: $data['wind']['speed'],
             pressure: $data['main']['pressure'],
-            visibility: $data['visibility']
+            visibility: $data['visibility'],
+            date: $data['dt_txt'] ?? null
         );
     }
 }

@@ -19,8 +19,6 @@ class OpenWeatherService {
     public function getCurrentWeather(string $city): WeatherDTO {
         return Cache::remember("weather_$city", 600, function () use ($city) {
 
-//            https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
-
             $response = Http::get("{$this->baseUrl}weather", [
                 'q' => $city,
                 'appid' => $this->apiKey,
@@ -33,6 +31,36 @@ class OpenWeatherService {
             }
 
             return WeatherDTO::fromApi($response->json());
+        });
+    }
+
+    public function getForecast(string $city): array {
+        return Cache::remember("forecast_$city", 1800, function () use ($city) {
+
+            $response = Http::withoutVerifying()->get("{$this->baseUrl}forecast", [
+                'q' => $city,
+                'appid' => $this->apiKey,
+                'units' => 'metric',
+                'lang' => 'en'
+            ]);
+
+            if ($response->failed()) {
+                return [];
+            }
+
+            $data = $response->json();
+            $list = $data['list'];
+
+            $dailyForecasts = array_filter($list, static function ($item) {
+                return str_contains($item['dt_txt'], '12:00:00');
+            });
+
+            $mapped = array_map(static function ($item) use ($data) {
+                $item['name'] = $data['city']['name'];
+                return WeatherDTO::fromApi($item);
+            }, $dailyForecasts);
+
+            return array_values($mapped);
         });
     }
 }
