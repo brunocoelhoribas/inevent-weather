@@ -13,7 +13,7 @@ Route::get('/', static function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('welcome');
 
 Route::get('/dashboard', static function () {
     return Inertia::render('Dashboard');
