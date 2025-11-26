@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use App\DTOs\WeatherDTO;
@@ -87,6 +88,9 @@ class OpenWeatherService {
         });
     }
 
+    /**
+     * @throws ConnectionException
+     */
     public function getCityNameByCoords(float $lat, float $lon): string {
         $response = Http::withoutVerifying()->get("{$this->baseUrl}weather", [
             'lat' => $lat,
