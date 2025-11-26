@@ -17,7 +17,6 @@ A modern, full-stack weather application built with **Laravel 12** and **Vue 3**
 * **Smart Forecasting:** next 24h hourly timeline & 5-day daily outlook.
 * **Data Visualization:** dynamic temperature trend chart using Chart.js.
 * **Geolocation:** "use my location" feature.
-* **Smart Assistant:** heuristic "AI" advice based on weather conditions.
 * **History:** persisted search history per user.
 
 ## Getting Started
