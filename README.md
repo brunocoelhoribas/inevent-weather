@@ -32,7 +32,7 @@ Follow these steps to set up the project locally.
 
 1.  **Clone the repository**
     ```bash
-    git clone [https://github.com/SEU_USUARIO/inevent-weather.git](https://github.com/SEU_USUARIO/inevent-weather.git)
+    git clone [https://github.com/brunocoelhoribas/inevent-weather.git](https://github.com/brunocoelhoribas/inevent-weather.git)
     cd inevent-weather
     ```
 
